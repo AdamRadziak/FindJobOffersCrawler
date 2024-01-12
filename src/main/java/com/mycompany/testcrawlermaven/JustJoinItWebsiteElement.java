@@ -30,6 +30,7 @@ public class JustJoinItWebsiteElement extends WebsiteElement {
     private static final String Company_xpath = "//div[@class='css-ldh1c9']//span";
     private static final String Salaries_range_xpath = "//div[@class='css-1b2ga3v']";
     private static final String Pages_xpath = "//ul[@class='pagination mb-0 ng-star-inserted']//a";
+    private static final String Count_offers = "//span[@class='MuiTab-iconWrapper css-1604j7q']";
     // variables get from methods
     private static String url;
 
@@ -78,7 +79,7 @@ public class JustJoinItWebsiteElement extends WebsiteElement {
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(WebsiteElement.timeout));
         // get list of offers
         try {
-            WebElement offers_el_count = driver.findElement(By.xpath("//span[@class='MuiTab-iconWrapper css-1604j7q']"));
+            WebElement offers_el_count = driver.findElement(By.xpath(Count_offers));
             String offers = offers_el_count.getText();
             // delete offers and trailing whitespaces from text
             offers = offers.replace("offers", "");
