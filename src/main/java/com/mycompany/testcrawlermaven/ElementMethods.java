@@ -19,7 +19,7 @@ public class ElementMethods {
      */
     public static ArrayList<TableElement> Offers_tab = new ArrayList();
     /**
-     * Salaries_sep_regex is regex pattern to find - in unicode caharacter
+     * Salaries_sep_regex is regex pattern to find - in unicode character
      */
     public static String Salaries_sep_regex = "\u2013|\u2014|\u002D|\u02D7";
 
@@ -58,7 +58,7 @@ public class ElementMethods {
     }
 
     /**
-     * this function sorting ascending offers from Offers_tab Offers_tab is an
+     * this function sorting ascending job offers from Offers_tab Offers_tab is an
      * ArrayList for object TableElement with element of the table if salary
      * have x - y it sort by y if salary have Nieznane it seems salaries is 0
      * else salary have x
@@ -83,7 +83,7 @@ public class ElementMethods {
     }
 
     /**
-     * this function sorting descending offers from Offers tab Offers_tab is an
+     * this function sorting descending job offers from Offers tab Offers_tab is an
      * ArrayList for object TableElement with element of the table if salary
      * have x - y it sort by y if salary have Nieznane it seems salaries is 0
      * else salary have x

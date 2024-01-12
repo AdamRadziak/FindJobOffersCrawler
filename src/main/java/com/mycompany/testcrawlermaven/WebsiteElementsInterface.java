@@ -10,7 +10,7 @@ package com.mycompany.testcrawlermaven;
  */
 public interface WebsiteElementsInterface {
     /**
-     * this methods is for creating url whre searching job offers from websites
+     * this methods is for creating url where searching job offers from websites
      */
     public void create_get_job_offers_url();
     /**
