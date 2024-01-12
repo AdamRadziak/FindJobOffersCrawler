@@ -200,8 +200,13 @@ public class Okno extends javax.swing.JFrame {
         TableModel my = new TableModel();
         position = PositionText.getText();
         location = LocationText.getText();
-        FactoryWebsiteElement.build(FactoryWebsiteElement.website_names[0], position, location);
-        FactoryWebsiteElement.build(FactoryWebsiteElement.website_names[1], position, location);
+        // get offers from urls
+        WebsiteElement web1 = FactoryWebsiteElement.build(FactoryWebsiteElement.website_names[0], position, location);
+        web1.create_get_job_offers_url();
+        web1.get_offers();
+        WebsiteElement web2 = FactoryWebsiteElement.build(FactoryWebsiteElement.website_names[1], position, location);
+        web2.create_get_job_offers_url();
+        web2.get_offers();
         // set data to Table
         OffersTable.setModel(my);
         // refresh Table

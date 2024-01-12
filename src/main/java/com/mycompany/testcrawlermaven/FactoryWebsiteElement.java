@@ -22,16 +22,17 @@ public class FactoryWebsiteElement {
      * @param position - searching job name
      * @param location - localization for searching job
      */
-    static void build(String website_name, String position, String location) {
+    static WebsiteElement build(String website_name, String position, String location) {
+        
         if (website_name.equals(website_names[0])) {
-            JustJoinItWebsiteElement web1 = new JustJoinItWebsiteElement(position, location);
-            web1.create_get_job_offers_url();
-            web1.get_offers();
+            WebsiteElement web1 = new JustJoinItWebsiteElement(position, location);
+            return web1;
 
         } else {
-            NoFluffJobsWebsiteElement web2 = new NoFluffJobsWebsiteElement(position, location);
-            web2.create_get_job_offers_url();
-            web2.get_offers();
+            WebsiteElement web2 = new NoFluffJobsWebsiteElement(position, location);
+            return web2;
+
         }
+        
     }
 }
