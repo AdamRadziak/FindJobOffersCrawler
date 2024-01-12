@@ -43,10 +43,10 @@ public class JustJoinItWebsiteElement extends WebsiteElement {
         super(position, location);
     }
 
-    @Override
     /**
-     * this methods create url to seraching job offers from website
+     * this methods create url to searching job offers from website
      */
+    @Override
     public void create_get_job_offers_url() {
         // replace space to + char
         position = position.replace(" ", "+");

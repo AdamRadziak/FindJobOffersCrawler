@@ -14,10 +14,13 @@ import java.util.regex.Pattern;
  * class not having a constructor
  */
 public class ElementMethods {
-
-    // List of TableElements from pages
+    /**
+     * Offers_tab is job offers information for Table row
+     */
     public static ArrayList<TableElement> Offers_tab = new ArrayList();
-    // regex pattern to check - in all pages
+    /**
+     * Salaries_sep_regex is regex pattern to find - in unicode caharacter
+     */
     public static String Salaries_sep_regex = "\u2013|\u2014|\u002D|\u02D7";
 
     /**

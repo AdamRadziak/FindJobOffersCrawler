@@ -10,8 +10,9 @@ package com.mycompany.testcrawlermaven;
  * @author adamr
  */
 public class FactoryWebsiteElement {
-
-    // website names
+    /**
+     * website_names is String list with name of website where searching
+     */
     public static String[] website_names = {"justjoin_it", "no_fluff_jobs"};
 
     /**

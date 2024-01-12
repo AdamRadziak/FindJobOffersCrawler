@@ -13,9 +13,7 @@ public abstract class WebsiteElement implements WebsiteElementsInterface {
 
     public String position;
     public String location;
-    // max offers count from each website
     public static int Max_offers_count = 100;
-    // max timeout for finding elements in selenium webdriver
     public static long timeout = 300;
 
     /**

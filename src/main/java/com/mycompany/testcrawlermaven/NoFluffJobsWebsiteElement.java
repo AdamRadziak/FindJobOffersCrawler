@@ -45,7 +45,7 @@ public class NoFluffJobsWebsiteElement extends WebsiteElement {
     }
 
     /**
-     * this methods create url to seraching job offers from website
+     * this methods create url to searching job offers from website
      */
     @Override
     public void create_get_job_offers_url() {
@@ -53,7 +53,7 @@ public class NoFluffJobsWebsiteElement extends WebsiteElement {
     }
 
     /**
-     * this methods finding the job offers information such as job postion
+     * this methods finding the job offers information such as job position
      * company salaries range and get it to Offers_tab container with new
      * TableElements using selenium webdriver chrome. If information like job
      * postion not exists it print "Nie znaleziono oferty" in output window If
@@ -82,7 +82,14 @@ public class NoFluffJobsWebsiteElement extends WebsiteElement {
             Get_offers_from_nofluff_job(url, location);
         }
     }
-
+    
+    /**
+     * this methods finding the job offers information such as job position
+     * company salaries range and get it to Offers_tab container with new
+     * TableElements using selenium webdriver chrome in some new pages
+     * @param url url to search for
+     * @param location localization for searching job
+     */
     public static void Get_offers_from_nofluff_job(String url, String location) {
         // get new driver
         WebDriver driver = new ChromeDriver();

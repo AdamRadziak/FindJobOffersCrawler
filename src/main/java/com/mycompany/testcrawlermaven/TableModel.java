@@ -13,11 +13,14 @@ import static com.mycompany.testcrawlermaven.ElementMethods.Offers_tab;
  */
 import javax.swing.table.AbstractTableModel;
 
+/**
+ * This class create default template for Table
+ * @author adamr
+ */
 public class TableModel extends AbstractTableModel {
 
     /**
      * this function return num of rows from table
-     *
      * @return num of rows
      */
     @Override

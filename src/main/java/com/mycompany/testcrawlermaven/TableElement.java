@@ -11,6 +11,7 @@ package com.mycompany.testcrawlermaven;
  */
 public class TableElement {
 
+
     protected String Position;
     protected String Company;
     protected String Localization;
@@ -19,7 +20,7 @@ public class TableElement {
     /**
      * Constructor for TableElement class
      *
-     * @param Position job postion
+     * @param Position job position
      * @param Company company
      * @param Localization localization for searching job
      * @param Salary_range job expected salary

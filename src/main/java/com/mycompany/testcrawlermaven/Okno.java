@@ -19,17 +19,21 @@ import javax.swing.JOptionPane;
 
 /**
  * This is main window for program
- *
  * @author adamr
  */
 public class Okno extends javax.swing.JFrame {
 
     /**
-     * Creates new form Okno
+     * position searching job position from textbox
      */
     public static String position;
+    /**
+     * location searching job localization from textbox
+     */
     public static String location;
-    // default model for jTable
+    /**
+     * Default Tbale model for Jtable on startup
+     */
     public TableModel DefaultTableModel = new TableModel();
 
     /**
