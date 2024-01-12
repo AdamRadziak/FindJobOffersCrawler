@@ -7,6 +7,10 @@ package com.mycompany.testcrawlermaven;
 import com.itextpdf.text.DocumentException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -14,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
+ * This is main window for program
  *
  * @author adamr
  */
@@ -27,6 +32,10 @@ public class Okno extends javax.swing.JFrame {
     // default model for jTable
     public TableModel DefaultTableModel = new TableModel();
 
+    /**
+     * Constructor get 2 methods initComponents which creates components create
+     * default table template
+     */
     public Okno() {
         initComponents();
         // set column names for table
@@ -176,21 +185,25 @@ public class Okno extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * this function is for searching job offers and saving it to jTable
+     * compnonent
+     *
+     * @param evt
+     */
     private void SearchButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchButtActionPerformed
         // table model
         TableModel my = new TableModel();
         position = PositionText.getText();
         location = LocationText.getText();
-        ElementMethods.Get_information_from_justjoin_web(position, location);
-        ElementMethods.Get_information_from_nofluffjobs_web(position, location);
+        FactoryWebsiteElement.build(FactoryWebsiteElement.website_names[0], position, location);
+        FactoryWebsiteElement.build(FactoryWebsiteElement.website_names[1], position, location);
         // set data to Table
         OffersTable.setModel(my);
         // refresh Table
         OffersTable.repaint();
         // set visibility of down_state_label to false
         Down_state_label.setText("Oferty wczytane. Ilość ofert: " + OffersTable.getRowCount());
-
 
     }//GEN-LAST:event_SearchButtActionPerformed
 
@@ -201,7 +214,11 @@ public class Okno extends javax.swing.JFrame {
     private void LocationTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LocationTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_LocationTextActionPerformed
-
+    /**
+     * this function sorting Jtable elements form highest to lowest
+     *
+     * @param evt
+     */
     private void SortDescButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SortDescButtonActionPerformed
         // table model
         TableModel my = new TableModel();
@@ -210,7 +227,11 @@ public class Okno extends javax.swing.JFrame {
         OffersTable.setModel(my);
         OffersTable.repaint();
     }//GEN-LAST:event_SortDescButtonActionPerformed
-
+    /**
+     * this function sorting Jtable elements form lowest to highest
+     *
+     * @param evt
+     */
     private void SortAscButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SortAscButtonActionPerformed
         // table model
         TableModel my = new TableModel();
@@ -219,28 +240,36 @@ public class Okno extends javax.swing.JFrame {
         OffersTable.setModel(my);
         OffersTable.repaint();
     }//GEN-LAST:event_SortAscButtonActionPerformed
-
+    /**
+     * this function saving pdf file in path selected by user
+     *
+     * @param evt
+     */
     private void PdfButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PdfButtActionPerformed
         // parent component of the dialog
         JFrame parentFrame = new JFrame();
 
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Specify a file to save dont write .pdf in the end");
+        fileChooser.setDialogTitle("Specify a file to save don't write .pdf in the end");
 
         int userSelection = fileChooser.showSaveDialog(parentFrame);
 
         if (userSelection == JFileChooser.APPROVE_OPTION) {
             File fileToSave = fileChooser.getSelectedFile();
-            System.out.println("Save as file: " + fileToSave.getAbsolutePath());
             // create pdf file in selected path with .pdf extensions
-            String path = fileToSave.getAbsolutePath() + ".pdf";
-            PdfFile pdf = new PdfFile(path);
-            try {
-                pdf.create_pdf_file(position, location, OffersTable.getRowCount());
-                String message = "Zapisano plik pdf w ścieżce\n" + path;
-                JOptionPane.showMessageDialog(null, message, "Zapisano plik pdf", JOptionPane.INFORMATION_MESSAGE);
-            } catch (FileNotFoundException | DocumentException ex) {
-                Logger.getLogger(Okno.class.getName()).log(Level.SEVERE, null, ex);
+            String string_path = fileToSave.getAbsolutePath() + ".pdf";
+            Path path = Paths.get(string_path);
+            if (Files.exists(path) && !Files.isDirectory(path, LinkOption.NOFOLLOW_LINKS)) {
+                int option_choose = JOptionPane.showConfirmDialog(parentFrame, "This file exists, overwrite file?", "Choose one", JOptionPane.YES_NO_OPTION);
+                System.out.println(option_choose);
+                // if yes option
+                if (option_choose == JOptionPane.YES_OPTION) {
+                    create_pdf_file(string_path);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Nie zapisano pliku", "Set no option", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                create_pdf_file(string_path);
             }
         }
     }//GEN-LAST:event_PdfButtActionPerformed
@@ -248,6 +277,23 @@ public class Okno extends javax.swing.JFrame {
     private void Down_state_labelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Down_state_labelKeyPressed
 
     }//GEN-LAST:event_Down_state_labelKeyPressed
+    /**
+     * this function save pdf file in selected path
+     *
+     * @param path
+     */
+    private void create_pdf_file(String path) {
+        System.out.println("Save as file: " + path);
+        PdfFile pdf = new PdfFile(path);
+        try {
+            pdf.create_pdf_file(position, location, OffersTable.getRowCount());
+            String message = "Zapisano plik pdf w ścieżce\n" + path;
+            JOptionPane.showMessageDialog(null, message, "Zapisano plik pdf", JOptionPane.INFORMATION_MESSAGE);
+        } catch (FileNotFoundException | DocumentException ex) {
+            Logger.getLogger(Okno.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex, "Exception saving pdf file", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     /**
      * @param args the command line arguments
