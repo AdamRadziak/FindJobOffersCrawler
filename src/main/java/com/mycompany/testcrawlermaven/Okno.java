@@ -51,7 +51,7 @@ public class Okno extends javax.swing.JFrame {
      * setting description in main window
      */
     private void set_desc(){
-        String desc = "Wyszukiwarka ofert pracy z okreslonymi widełkami ze stron";
+        String desc = "Wyszukiwarka ofert pracy z okreslonymi widełkami ze stron ";
          for (String website_name : FactoryWebsiteElement.website_names) {
             desc = desc + website_name + ", ";
             
