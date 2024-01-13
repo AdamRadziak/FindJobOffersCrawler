@@ -67,7 +67,7 @@ public class ElementMethods {
         int salary_act;
         int salary_next;
         // sorting by COllections method
-        for (int j = 0; j < WebsiteElement.Max_offers_count; j++) {
+        for (int j = 0; j < WebsiteElement.Max_offers_count*2; j++) {
             for (int i = 0; i < Offers_tab.size() - 1; i++) {
                 TableElement actual = Offers_tab.get(i);
                 TableElement next = Offers_tab.get(i + 1);
@@ -91,7 +91,7 @@ public class ElementMethods {
     public static void sort_desc() {
         int salary_act;
         int salary_next;
-        for (int j = 0; j < WebsiteElement.Max_offers_count; j++) {
+        for (int j = 0; j < WebsiteElement.Max_offers_count*2; j++) {
             for (int i = 0; i < Offers_tab.size() - 1; i++) {
                 TableElement actual = Offers_tab.get(i);
                 TableElement next = Offers_tab.get(i + 1);

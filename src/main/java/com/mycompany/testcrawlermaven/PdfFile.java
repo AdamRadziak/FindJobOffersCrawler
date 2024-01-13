@@ -52,16 +52,17 @@ public class PdfFile {
         // create table model like the same in appliacation
         TableModel my = new TableModel();
         Document document = new Document();
+        PdfFileModel pdfmodel = new PdfFileModel();
         PdfWriter.getInstance(document, new FileOutputStream(path));
         document.open();
         // add title, subtitle and description for document
-        addTitleSubtitle(document);
-        addDescriptions(document, position, location, count_offers);
+        addTitleSubtitle(document, pdfmodel);
+        addDescriptions(document, position, location, count_offers, pdfmodel);
         //create  pdf table has the same column like table model in appliacation
         PdfPTable table = new PdfPTable(my.getColumnCount());
         // create TableHeader
-        addTableHeader(table, my);
-        addRows(table);
+        addTableHeader(table, my, pdfmodel);
+        addRows(table, pdfmodel);
         document.add(table);
         document.close();
 
@@ -72,18 +73,25 @@ public class PdfFile {
      * @param document Document object pdf file
      * @throws DocumentException when user want to write in open document
      */
-    private void addTitleSubtitle(Document document) throws DocumentException {
+    private void addTitleSubtitle(Document document, PdfFileModel model) throws DocumentException {
+        
         // subtitle 
         String subtitle_string = "";
-        // add title, subtitle and information for table
-        Font font_title = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.BLACK);
-        Font font_subtitle = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 12, BaseColor.BLACK);
-        Chunk title = new Chunk("Oferty pracy z portali:", font_title);
+//        // add title, subtitle and information for table
+//        Font font_title = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, BaseColor.BLACK);
+//        Font font_subtitle = FontFactory.getFont(FontFactory.HELVETICA_OBLIQUE, 12, BaseColor.BLACK);
+//        Chunk title = new Chunk("Oferty pracy z portali:", font_title);
+        // add and format title        
+        model.setTitle("Oferty pracy z portali:");
+        Chunk title = model.format_title();
         // get subtitle from list
         for (String website_name : FactoryWebsiteElement.website_names) {
             subtitle_string = subtitle_string + website_name + ", ";
+            
         }
-        Chunk subtitle = new Chunk(subtitle_string, font_subtitle);
+        model.setSubtitle(subtitle_string);
+        Chunk subtitle = model.format_subtitle();
+//        Chunk subtitle = new Chunk(subtitle_string, font_subtitle);
         // add chunks to documents
         document.add(title);
         document.add(new Paragraph("\n"));
@@ -100,17 +108,24 @@ public class PdfFile {
      * @param count_offers count of table rows from Jtable
      * @throws DocumentException when user want to write in open document
      */
-    private void addDescriptions(Document document, String position, String location, int count_offers) throws DocumentException {
-        Font font_normal = FontFactory.getFont(FontFactory.HELVETICA, 10, BaseColor.BLACK);
-        Chunk description_1 = new Chunk("Szukane oferty na stanowisko: " + position, font_normal);
-        Chunk description_2 = new Chunk(" w lokalizacji " + location, font_normal);
-        Chunk offers_count = new Chunk("Znaleziono " + count_offers + " ofert", font_normal);
+    private void addDescriptions(Document document, String position, String location, int count_offers, PdfFileModel model) throws DocumentException {
+        String desc_1 = "Szukane oferty na stanowisko: " + position + " w lokalizacji " + location;
+        String desc_2 = "Znaleziono " + count_offers + " ofert";
+//        Font font_normal = FontFactory.getFont(FontFactory.HELVETICA, 10, BaseColor.BLACK);
+//        Chunk description_1 = new Chunk("Szukane oferty na stanowisko: " + position, font_normal);
+//        Chunk description_2 = new Chunk(" w lokalizacji " + location, font_normal);
+//        Chunk offers_count = new Chunk("Znaleziono " + count_offers + " ofert", font_normal);
+        // add description for document
+        model.setDescr_1(desc_1);
+        model.setDescr_2(desc_2);
+        Chunk description_1 = model.format_descr_1();
+        Chunk description_2 = model.format_descr_2();
         // add chunks to document
         document.add(description_1);
+        document.add(new Paragraph("\n"));
         document.add(description_2);
-        document.add(new Paragraph("\n"));
-        document.add(offers_count);
-        document.add(new Paragraph("\n"));
+//        document.add(offers_count);
+//        document.add(new Paragraph("\n"));
 
     }
 
@@ -121,15 +136,17 @@ public class PdfFile {
      * @param table PdfTable object table in pdf file
      * @param model TableModel object with template of pdf table
      */
-    private void addTableHeader(PdfPTable table, TableModel model) {
-        for (int i = 0; i < model.getColumnCount(); i++) {
-            Stream.of(model.getColumnName(i))
+    private void addTableHeader(PdfPTable table, TableModel TableModel, PdfFileModel PdfModel) {
+        for (int i = 0; i < TableModel.getColumnCount(); i++) {
+            Stream.of(TableModel.getColumnName(i))
                     .forEach(columnTitle -> {
                         PdfPCell header = new PdfPCell();
-                        // color dark blue
-                        header.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                        header.setBorderWidth(2);
-                        header.setMinimumHeight(20);
+                        // format pdf headers
+                        PdfModel.format_table_header(header);
+//                        header.setBackgroundColor(BaseColor.LIGHT_GRAY);
+//                        header.setBorderWidth(2);
+//                        header.setMinimumHeight(20);
+                        // add column title to header
                         header.setPhrase(new Phrase(columnTitle));
                         table.addCell(header);
                     });
@@ -141,27 +158,31 @@ public class PdfFile {
      *
      * @param table PdfTable object table in pdf file
      */
-    private void addRows(PdfPTable table) {
+    private void addRows(PdfPTable table, PdfFileModel model) {
         for (TableElement el : Offers_tab) {
             // customize cell
             PdfPCell PositionCell = new PdfPCell(new Phrase(el.Position));
-            PositionCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            PositionCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            model.format_rows(PositionCell);
+//            PositionCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            PositionCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(PositionCell);
             // customize cell
             PdfPCell LocalizationCell = new PdfPCell(new Phrase(el.Localization));
-            PositionCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            PositionCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            model.format_rows(PositionCell);
+//            PositionCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            PositionCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(LocalizationCell);
             // customize cell
             PdfPCell CompanyCell = new PdfPCell(new Phrase(el.Company));
-            PositionCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            PositionCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            model.format_rows(CompanyCell);
+//            PositionCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            PositionCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(CompanyCell);
             // customize cell
             PdfPCell SalaryCell = new PdfPCell(new Phrase(el.Salary_range));
-            PositionCell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            PositionCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            model.format_rows(SalaryCell);
+//            PositionCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            PositionCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
             table.addCell(SalaryCell);
         }
     }

@@ -7,8 +7,10 @@ package com.mycompany.testcrawlermaven;
 import static com.mycompany.testcrawlermaven.ElementMethods.Offers_tab;
 import java.time.Duration;
 import java.util.List;
+import javax.swing.JOptionPane;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -82,11 +84,12 @@ public class NoFluffJobsWebsiteElement extends WebsiteElement {
             Get_offers_from_nofluff_job(url, location);
         }
     }
-    
+
     /**
      * this methods finding the job offers information such as job position
      * company salaries range and get it to Offers_tab container with new
      * TableElements using selenium webdriver chrome in some new pages
+     *
      * @param url url to search for
      * @param location localization for searching job
      */
@@ -124,13 +127,17 @@ public class NoFluffJobsWebsiteElement extends WebsiteElement {
                 salaries = "";
                 position = "";
                 company = "";
-            }
             if (!company.isEmpty()) {
                 Offers_tab.add(new TableElement(position, company, location, salaries));
-            }
             System.out.println("stanowisko= " + position);
             System.out.println("firma= " + company);
             System.out.println("Widełki wynagrodzeń= " + salaries);
+            }
+            } catch (TimeoutException te) {
+                JOptionPane.showMessageDialog(null, "timeout occured", te + " try again", JOptionPane.WARNING_MESSAGE);
+                driver.close();
+                driver.quit();
+            }
 
         }
         driver.close();

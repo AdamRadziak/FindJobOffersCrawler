@@ -6,8 +6,10 @@ package com.mycompany.testcrawlermaven;
 
 import static com.mycompany.testcrawlermaven.ElementMethods.Offers_tab;
 import java.time.Duration;
+import javax.swing.JOptionPane;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -125,6 +127,11 @@ public class JustJoinItWebsiteElement extends WebsiteElement {
             }
         } catch (NoSuchElementException e) {
             System.out.println("NIe znaleziono ofert na stronie");
+        }
+        catch (TimeoutException te){
+            JOptionPane.showMessageDialog(null,"timeout occured", te + " try again",JOptionPane.WARNING_MESSAGE);
+            driver.close();
+            driver.quit();
         }
         driver.close();
         driver.quit();
